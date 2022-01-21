@@ -27,7 +27,7 @@ public class LineStringTest {
 		LineString lineString = mapper.readValue("{\"type\":\"LineString\",\"coordinates\":[[100.0,0.0],[101.0,1.0]]}",
 				LineString.class);
 		assertNotNull(lineString);
-		List<LngLatAlt> coordinates = lineString.getCoordinates();
+		List<LngLatAlt> coordinates = lineString.getBbox();
 		PointTest.assertLngLatAlt(100, 0, Double.NaN, coordinates.get(0));
 		PointTest.assertLngLatAlt(101, 1, Double.NaN, coordinates.get(1));
 	}

@@ -27,7 +27,7 @@ public class MultiPointTest {
 				.readValue("{\"type\":\"MultiPoint\",\"coordinates\":[[100.0,0.0],[101.0,1.0]]}",
 				MultiPoint.class);
 		assertNotNull(multiPoint);
-		List<LngLatAlt> coordinates = multiPoint.getCoordinates();
+		List<LngLatAlt> coordinates = multiPoint.getBbox();
 		PointTest.assertLngLatAlt(100, 0, Double.NaN, coordinates.get(0));
 		PointTest.assertLngLatAlt(101, 1, Double.NaN, coordinates.get(1));
 	}

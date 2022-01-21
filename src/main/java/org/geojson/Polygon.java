@@ -1,61 +1,64 @@
 package org.geojson;
 
 import java.util.Arrays;
-import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Collections;
 
-public class Polygon extends Geometry<List<LngLatAlt>> {
+public class Polygon extends Geometry<List<List<LngLatAlt>>> {
 
 	public Polygon() {
+		super(new ArrayList<List<LngLatAlt>>());
 	}
 
 	public Polygon(List<LngLatAlt> polygon) {
-		add(polygon);
+		super(new ArrayList<List<LngLatAlt>>(Collections.singletonList(polygon)));
 	}
 
 	public Polygon(LngLatAlt... polygon) {
-		add(Arrays.asList(polygon));
+		this(Arrays.asList(polygon));
 	}
 
 	public void setExteriorRing(List<LngLatAlt> points) {
-		if (coordinates.isEmpty()) {
-			coordinates.add(0, points);
+		if (bbox.isEmpty()) {
+			bbox.add(0, points);
 		} else {
-			coordinates.set(0, points);
+			bbox.set(0, points);
 		}
 	}
 
 	@JsonIgnore
 	public List<LngLatAlt> getExteriorRing() {
 		assertExteriorRing();
-		return coordinates.get(0);
+		return bbox.get(0);
 	}
 
 	@JsonIgnore
 	public List<List<LngLatAlt>> getInteriorRings() {
 		assertExteriorRing();
-		return coordinates.subList(1, coordinates.size());
+		return bbox.subList(1, bbox.size());
 	}
 
 	public List<LngLatAlt> getInteriorRing(int index) {
 		assertExteriorRing();
-		return coordinates.get(1 + index);
+		return bbox.get(1 + index);
 	}
 
 	public void addInteriorRing(List<LngLatAlt> points) {
 		assertExteriorRing();
-		coordinates.add(points);
+		bbox.add(points);
 	}
 
 	public void addInteriorRing(LngLatAlt... points) {
 		assertExteriorRing();
-		coordinates.add(Arrays.asList(points));
+		bbox.add(Arrays.asList(points));
 	}
 
 	private void assertExteriorRing() {
-		if (coordinates.isEmpty())
+		if (bbox.isEmpty()) {
 			throw new RuntimeException("No exterior ring definied");
+		}
 	}
 
 	@Override

@@ -1,32 +1,25 @@
 package org.geojson;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public abstract class Geometry<T> extends GeoJsonObject {
 
-	protected List<T> coordinates = new ArrayList<T>();
+	@JsonProperty("coordinates")
+	protected T bbox;
 
 	public Geometry() {
 	}
 
-	public Geometry(T... elements) {
-		for (T coordinate : elements) {
-			coordinates.add(coordinate);
-		}
+	public Geometry(T bbox) {
+		this.bbox = bbox;
 	}
 
-	public Geometry<T> add(T elements) {
-		coordinates.add(elements);
-		return this;
+	public T getBbox() {
+		return this.bbox;
 	}
 
-	public List<T> getCoordinates() {
-		return coordinates;
-	}
-
-	public void setCoordinates(List<T> coordinates) {
-		this.coordinates = coordinates;
+	public void setBbox(T bbox) {
+		this.bbox = bbox;
 	}
 
 	@SuppressWarnings("rawtypes")
@@ -42,18 +35,18 @@ public abstract class Geometry<T> extends GeoJsonObject {
 			return false;
 		}
 		Geometry geometry = (Geometry)o;
-		return !(coordinates != null ? !coordinates.equals(geometry.coordinates) : geometry.coordinates != null);
+		return !(bbox != null ? !bbox.equals(geometry.bbox) : geometry.bbox != null);
 	}
 
 	@Override
 	public int hashCode() {
 		int result = super.hashCode();
-		result = 31 * result + (coordinates != null ? coordinates.hashCode() : 0);
+		result = 31 * result + (bbox != null ? bbox.hashCode() : 0);
 		return result;
 	}
 
 	@Override
 	public String toString() {
-		return "Geometry{" + "coordinates=" + coordinates + "} " + super.toString();
+		return "Geometry{" + "coordinates=" + bbox + "} " + super.toString();
 	}
 }

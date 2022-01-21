@@ -18,18 +18,12 @@ public class PointTest {
 
 	public static void assertLngLatAlt(double expectedLongitude, double expectedLatitude, double expectedAltitude,
 									   LngLatAlt point) {
-		assertLngLatAlt(expectedLongitude, expectedLatitude, expectedAltitude, new double[0], point);
-	}
-
-	public static void assertLngLatAlt(double expectedLongitude, double expectedLatitude, double expectedAltitude,
-									   double[] expectedAdditionalElements, LngLatAlt point) {
 		assertEquals(expectedLongitude, point.getLongitude(), 0.00001);
 		assertEquals(expectedLatitude, point.getLatitude(), 0.00001);
 		if (Double.isNaN(expectedAltitude)) {
 			assertFalse(point.hasAltitude());
 		} else {
 			assertEquals(expectedAltitude, point.getAltitude(), 0.00001);
-			assertTrue(Arrays.equals(expectedAdditionalElements, point.getAdditionalElements()));
 		}
 	}
 
@@ -47,7 +41,7 @@ public class PointTest {
 		assertNotNull(value);
 		assertTrue(value instanceof Point);
 		Point point = (Point)value;
-		assertLngLatAlt(100, 5, Double.NaN, point.getCoordinates());
+		assertLngLatAlt(100, 5, Double.NaN, point.getBbox());
 	}
 
 	@Test
@@ -55,7 +49,7 @@ public class PointTest {
 		GeoJsonObject value = mapper.readValue("{\"type\":\"Point\",\"coordinates\":[100.0,5.0,123]}",
 				GeoJsonObject.class);
 		Point point = (Point)value;
-		assertLngLatAlt(100, 5, 123, point.getCoordinates());
+		assertLngLatAlt(100, 5, 123, point.getBbox());
 	}
 
 	@Test
@@ -65,25 +59,4 @@ public class PointTest {
 				mapper.writeValueAsString(point));
 	}
 
-	@Test
-	public void itShouldDeserializeAPointWithAdditionalAttributes() throws IOException {
-		GeoJsonObject value = mapper.readValue("{\"type\":\"Point\",\"coordinates\":[100.0,5.0,123,456,789.2]}",
-				GeoJsonObject.class);
-		Point point = (Point)value;
-		assertLngLatAlt(100, 5, 123, new double[] {456d, 789.2}, point.getCoordinates());
-	}
-
-	@Test
-	public void itShouldSerializeAPointWithAdditionalAttributes() throws JsonProcessingException {
-		Point point = new Point(100, 0, 256, 345d, 678d);
-		assertEquals("{\"type\":\"Point\",\"coordinates\":[100.0,0.0,256.0,345.0,678.0]}",
-				mapper.writeValueAsString(point));
-	}
-
-	@Test
-	public void itShouldSerializeAPointWithAdditionalAttributesAndNull() throws JsonProcessingException {
-		Point point = new Point(100, 0, 256, 345d, 678d);
-		assertEquals("{\"type\":\"Point\",\"coordinates\":[100.0,0.0,256.0,345.0,678.0]}",
-				mapper.writeValueAsString(point));
-	}
 }

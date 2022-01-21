@@ -33,6 +33,6 @@ public class MultiPoligonTest {
 				"{\"type\":\"MultiPolygon\",\"coordinates\":[[[[102.0,2.0],[103.0,2.0],[103.0,3.0],[102.0,3.0],[102.0,2.0]]],"
 						+ "[[[100.0,0.0],[101.0,0.0],[101.0,1.0],[100.0,1.0],[100.0,0.0]],"
 						+ "[[100.2,0.2],[100.8,0.2],[100.8,0.8],[100.2,0.8],[100.2,0.2]]]]}", MultiPolygon.class);
-		assertEquals(2, multiPolygon.getCoordinates().size());
+		assertEquals(2, multiPolygon.getBbox().size());
 	}
 }

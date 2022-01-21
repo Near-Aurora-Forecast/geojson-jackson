@@ -1,34 +1,21 @@
 package org.geojson;
 
-public class Point extends GeoJsonObject {
-
-	private LngLatAlt coordinates;
+public class Point extends Geometry<LngLatAlt> {
 
 	public Point() {
+		super();
 	}
 
-	public Point(LngLatAlt coordinates) {
-		this.coordinates = coordinates;
+	public Point(LngLatAlt bbox) {
+		this.bbox = bbox;
 	}
 
 	public Point(double longitude, double latitude) {
-		coordinates = new LngLatAlt(longitude, latitude);
+		this(new LngLatAlt(longitude, latitude));
 	}
 
 	public Point(double longitude, double latitude, double altitude) {
-		coordinates = new LngLatAlt(longitude, latitude, altitude);
-	}
-
-	public Point(double longitude, double latitude, double altitude, double... additionalElements) {
-		coordinates = new LngLatAlt(longitude, latitude, altitude, additionalElements);
-	}
-
-	public LngLatAlt getCoordinates() {
-		return coordinates;
-	}
-
-	public void setCoordinates(LngLatAlt coordinates) {
-		this.coordinates = coordinates;
+		this(new LngLatAlt(longitude, latitude, altitude));
 	}
 
 	@Override
@@ -47,19 +34,20 @@ public class Point extends GeoJsonObject {
 		if (!super.equals(o)) {
 			return false;
 		}
-		Point point = (Point)o;
-		return !(coordinates != null ? !coordinates.equals(point.coordinates) : point.coordinates != null);
+		Point point = (Point) o;
+		return !(bbox != null ? !bbox.equals(point.bbox)
+				: point.bbox != null);
 	}
 
 	@Override
 	public int hashCode() {
 		int result = super.hashCode();
-		result = 31 * result + (coordinates != null ? coordinates.hashCode() : 0);
+		result = 31 * result + (bbox != null ? bbox.hashCode() : 0);
 		return result;
 	}
 
 	@Override
 	public String toString() {
-		return "Point{" + "coordinates=" + coordinates + "} " + super.toString();
+		return "Point{} " + super.toString();
 	}
 }
